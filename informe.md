@@ -262,7 +262,9 @@ Para demostrar la funcionalidad de la base de datos, se ejecutaron las consultas
 | 3 | Teclado Mecánico RGB | 149.99 | Electrónica |
 | 2 | Mouse Logitech MX Master 3 | 99.99 | Electrónica |
 
-*[Espacio para imagen: Captura de pantalla de pgAdmin ejecutando la consulta 1]*
+![Consulta 1 en pgAdmin](images/query_1.png)
+
+*Figura 6: Captura de pantalla de pgAdmin ejecutando la consulta 1 - productos por categoría.*
 
 ### 2. Consulta para obtener los detalles de un pedido y los productos asociados
 
@@ -273,7 +275,9 @@ Para demostrar la funcionalidad de la base de datos, se ejecutaron las consultas
 | 1 | Juan Pérez | 2024-01-15 10:00:00 | Pendiente | 2 | Mouse Logitech MX Master 3 | 1 | 99.99 | 99.99 |
 | 2 | María García | 2024-01-16 11:00:00 | Pendiente | 3 | Teclado Mecánico RGB | 1 | 149.99 | 149.99 |
 
-*[Espacio para imagen: Captura de pantalla de pgAdmin ejecutando la consulta 2]*
+![Consulta 2 en pgAdmin](images/query_2.png)
+
+*Figura 7: Captura de pantalla de pgAdmin ejecutando la consulta 2 - detalles de pedidos.*
 
 ### 3. Consulta para encontrar el producto más caro
 
@@ -282,7 +286,9 @@ Para demostrar la funcionalidad de la base de datos, se ejecutaron las consultas
 |-------------|--------|--------|
 | 1 | Laptop Dell XPS 13 | 1299.99 |
 
-*[Espacio para imagen: Captura de pantalla de pgAdmin ejecutando la consulta 3]*
+![Consulta 3 en pgAdmin](images/query_3.png)
+
+*Figura 8: Captura de pantalla de pgAdmin ejecutando la consulta 3 - producto más caro.*
 
 ### 4. Consulta para obtener la cantidad total de productos en el carrito de un usuario
 
@@ -292,7 +298,9 @@ Para demostrar la funcionalidad de la base de datos, se ejecutaron las consultas
 | 1 | Juan Pérez | 2 | 2 |
 | 2 | María García | 1 | 1 |
 
-*[Espacio para imagen: Captura de pantalla de pgAdmin ejecutando la consulta 4]*
+![Consulta 4 en pgAdmin](images/query_4.png)
+
+*Figura 9: Captura de pantalla de pgAdmin ejecutando la consulta 4 - productos en carrito.*
 
 ### 5. Consulta para obtener los productos con calificaciones superiores a 4
 
@@ -301,7 +309,9 @@ Para demostrar la funcionalidad de la base de datos, se ejecutaron las consultas
 |-------------|--------|-----------------------|------------------|
 | 1 | Laptop Dell XPS 13 | 5.000000 | 2 |
 
-*[Espacio para imagen: Captura de pantalla de pgAdmin ejecutando la consulta 5]*
+![Consulta 5 en pgAdmin](images/query_5.png)
+
+*Figura 10: Captura de pantalla de pgAdmin ejecutando la consulta 5 - productos con alta calificación.*
 
 ### 6. Consulta para encontrar los vendedores con más productos vendidos
 
@@ -312,7 +322,9 @@ Para demostrar la funcionalidad de la base de datos, se ejecutaron las consultas
 | 1 | TechStore | 2 |
 | 3 | Home Essentials | 1 |
 
-*[Espacio para imagen: Captura de pantalla de pgAdmin ejecutando la consulta 6]*
+![Consulta 6 en pgAdmin](images/query_6.png)
+
+*Figura 11: Captura de pantalla de pgAdmin ejecutando la consulta 6 - vendedores con más ventas.*
 
 Estos resultados confirman que la base de datos está funcionando correctamente y que las consultas SQL recuperan la información esperada. Las capturas de pantalla de pgAdmin pueden incluirse aquí para proporcionar evidencia visual de la ejecución de las consultas.
 
