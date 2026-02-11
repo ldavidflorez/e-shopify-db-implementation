@@ -4,12 +4,16 @@ echo "=== EJECUTANDO BENCHMARK BASELINE ==="
 echo "Base de datos con índices básicos únicamente"
 echo ""
 
+# Cambiar al directorio raíz del proyecto
+cd "$(dirname "$0")/.."
+
 # Cambiar al directorio docker para usar docker-compose
-cd ../docker
+cd docker
 
 # Limpiar contenedores y volúmenes de esta aplicación únicamente
 echo "Limpiando contenedores de la aplicación..."
 docker-compose down -v 2>/dev/null || true
+docker rm -f e-shopify-db e-shopify-pgadmin e-shopify-populate e-shopify-benchmark 2>/dev/null || true
 
 # Levantar PostgreSQL
 echo "Levantando PostgreSQL..."
@@ -80,4 +84,4 @@ echo "Operación DELETE,$delete_op,Eliminar producto de prueba" >> ../results/be
 echo "Archivo CSV generado: ../results/benchmark_baseline.csv"
 echo ""
 echo "Contenido del CSV:"
-cat benchmark_baseline.csv
+cat ../results/benchmark_baseline.csv

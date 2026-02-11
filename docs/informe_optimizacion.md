@@ -11,10 +11,10 @@
 Para esta actividad, se trabajó de manera individual debido a las restricciones del entorno académico. Sin embargo, el enfoque colaborativo se simuló mediante la revisión y validación de las optimizaciones con estándares de la industria.
 
 ## Paso 2. Selección del Archivo de Bases de Datos
-Se seleccionó el archivo `e-shopify-db.sql` como base para la optimización. Este archivo representa la implementación completa de la base de datos E-Shopify, normalizada en 3FN/BCNF, con datos de prueba y consultas de validación. La selección se basó en su estructura madura y su potencial para mejoras de rendimiento.
+Se seleccionó el archivo `sql/e-shopify-db.sql` como base para la optimización. Este archivo representa la implementación completa de la base de datos E-Shopify, normalizada en 3FN/BCNF, con datos de prueba y consultas de validación. La selección se basó en su estructura madura y su potencial para mejoras de rendimiento.
 
 ## Paso 3. Evaluación del Rendimiento
-Se desarrolló un script Python (`script_benchmark.py`) que mide automáticamente los tiempos de ejecución de consultas y operaciones frecuentes. El script se integra en el `docker-compose.yml` como un servicio que se ejecuta después de que PostgreSQL esté listo.
+Se desarrolló un script Python (`scripts/script_benchmark.py`) que mide automáticamente los tiempos de ejecución de consultas y operaciones frecuentes. El script se integra en el `docker-compose.yml` como un servicio que se ejecuta después de que PostgreSQL esté listo.
 
 El script ejecuta las siguientes operaciones y consultas, midiendo tiempos en milisegundos:
 
@@ -31,12 +31,11 @@ El script ejecuta las siguientes operaciones y consultas, midiendo tiempos en mi
 
 **Ejecución del benchmark:**
 ```bash
-# Para datos pequeños (prueba rápida)
-docker-compose up --build benchmark
+# Benchmark con índices básicos
+./scripts/run_baseline.sh
 
-# Para datos realistas (poblar primero)
-docker-compose up --build populate
-docker-compose up --build benchmark
+# Benchmark con optimizaciones
+./scripts/run_optimized.sh
 ```
 
 **Resultados del benchmark con datos realistas (dataset recreado):**
@@ -44,13 +43,13 @@ docker-compose up --build benchmark
 | Operación/Consulta | Tiempo (ms) | Filas | Descripción |
 |--------------------|-------------|-------|-------------|
 | Consulta 1 | 2 ms | 540 | Buscar productos de la categoría "Electrónica" |
-| Consulta 2 | 0 ms | 1 | Obtener el número total de pedidos |
-| Operación 1 | 1 ms | 0 | Agregar un nuevo producto |
-| Operación 2 | 1 ms | 0 | Actualizar el precio de un producto |
+| Consulta 2 | < 1 ms | 1 | Obtener el número total de pedidos |
+| Operación 1 | < 1 ms | 0 | Agregar un nuevo producto |
+| Operación 2 | < 1 ms | 0 | Actualizar el precio de un producto |
 | Consulta 3 | 4 ms | 10 | Obtener detalles de pedidos con productos |
 | Consulta 4 | 16 ms | 535 | Calcular promedio de calificaciones por producto |
 | Consulta 5 | 5 ms | 53 | Reporte de ingresos por vendedor |
-| Consulta lenta | 1 ms | 103 | Búsqueda de productos por nombre (LIKE) |
+| Consulta lenta | < 1 ms | 103 | Búsqueda de productos por nombre (LIKE) |
 | Operación DELETE | 3 ms | - | Eliminar producto de prueba |
 
 **Dataset utilizado para el benchmark (recreado):**
@@ -224,13 +223,13 @@ Se realizó una comparación empírica entre la base de datos con índices bási
 | Consulta | Baseline (ms) | Optimizada (ms) | Mejora | Índice Utilizado |
 |----------|---------------|-----------------|--------|------------------|
 | Productos Electrónica + ORDER BY precio | 2 | 6 | -200%* | idx_producto_categoria_precio |
-| Contar pedidos totales | 0 | 0 | 0% | N/A (COUNT optimizado) |
-| Insertar producto | 0 | 1 | -100%* | N/A |
-| Actualizar precio | 0 | 1 | -100%* | N/A |
+| Contar pedidos totales | < 1 ms | < 1 ms | 0% | N/A (COUNT optimizado) |
+| Insertar producto | < 1 ms | < 1 ms | -100%* | N/A |
+| Actualizar precio | < 1 ms | < 1 ms | -100%* | N/A |
 | Detalles de pedidos | 2 | 3 | -50%* | N/A |
 | Promedio de calificaciones | 7 | 8 | -14%* | N/A |
 | Ingresos por vendedor | 2 | 2 | 0% | idx_mv_metricas_ingresos |
-| Búsqueda LIKE en nombres | 0 | 1 | -100%* | idx_producto_nombre_lower |
+| Búsqueda LIKE en nombres | < 1 ms | 1 | -100%* | idx_producto_nombre_lower |
 | Historial pedidos usuario | N/A** | N/A** | N/A | idx_pedido_usuario_fecha |
 
 \* **Los tiempos más altos en la versión optimizada pueden deberse a:**
@@ -301,7 +300,7 @@ Cada mejora se documentó con justificación técnica:
 - Las vistas materializadas descargan procesamiento de reportes de la base operativa (beneficioso en entornos de alta carga).
 
 ## Paso 8. Generación del Archivo SQL Mejorado
-Se creó el archivo `e-shopify-db-optimized.sql` que incluye:
+Se creó el archivo `sql/e-shopify-db-optimized.sql` que incluye:
 - La estructura original.
 - Los nuevos índices y columnas.
 - Triggers y vistas materializadas.
@@ -309,7 +308,7 @@ Se creó el archivo `e-shopify-db-optimized.sql` que incluye:
 - Consultas de validación optimizadas.
 
 ## Paso 9. Revisión de los Productos
-- **Archivo SQL mejorado:** `e-shopify-db-optimized.sql` - Contiene estructura optimizada y datos.
+- **Archivo SQL mejorado:** `sql/e-shopify-db-optimized.sql` - Contiene estructura optimizada y datos.
 - **Informe de optimización:** Este documento - Describe detalladamente las mejoras, justificaciones y observaciones.
 
 ### Observaciones Finales
@@ -331,18 +330,18 @@ La ejecución del benchmark con datos realistas (1,008 usuarios, 5,010 productos
 | Operación/Consulta | Baseline (ms) | Optimizado (ms) | Diferencia | Descripción |
 |--------------------|---------------|-----------------|------------|-------------|
 | Consulta 1: Productos Electrónica | 2 | 6 | +4ms | Buscar productos por categoría |
-| Consulta 2: Contar pedidos | 0 | 0 | 0ms | Total de pedidos en sistema |
-| Operación 1: Insertar producto | 0 | 1 | +1ms | Agregar nuevo producto |
-| Operación 2: Actualizar precio | 0 | 1 | +1ms | Modificar precio de producto |
+| Consulta 2: Contar pedidos | < 1 ms | < 1 ms | 0ms | Total de pedidos en sistema |
+| Operación 1: Insertar producto | < 1 ms | < 1 ms | +1ms | Agregar nuevo producto |
+| Operación 2: Actualizar precio | < 1 ms | < 1 ms | +1ms | Modificar precio de producto |
 | Consulta 3: Detalles pedidos | 2 | 3 | +1ms | JOIN pedidos con productos |
 | Consulta 4: Promedio calificaciones | 7 | 8 | +1ms | Agregación con JOINs múltiples |
 | Consulta 5: Ingresos vendedores | 2 | 2 | 0ms | Reporte usando vista materializada |
-| Consulta LIKE: Búsqueda nombres | 0 | 1 | +1ms | Búsqueda case-insensitive |
+| Consulta LIKE: Búsqueda nombres | < 1 ms | 1 | +1ms | Búsqueda case-insensitive |
 | Operación DELETE: Eliminar producto | 1 | 2 | +1ms | Eliminar producto de catálogo |
 
 **Métricas consolidadas:**
-- **Base de datos baseline:** Tiempo promedio 1.6 ms, mejor caso 0ms, peor caso 7ms
-- **Base de datos optimizada:** Tiempo promedio 2.7 ms, mejor caso 0ms, peor caso 8ms
+- **Base de datos baseline:** Tiempo promedio 1.6 ms, mejor caso < 1 ms, peor caso 7ms
+- **Base de datos optimizada:** Tiempo promedio 2.7 ms, mejor caso < 1 ms, peor caso 8ms
 - **Dataset idéntico:** 1,008 usuarios, 5,010 productos, 10,008 reseñas, 1,013 pedidos
 
 Los resultados confirman que las técnicas aplicadas (índices compuestos, desnormalización selectiva, vistas materializadas) son **correctamente diseñadas y apropiadas para optimización de bases de datos de e-commerce**. Sin embargo, sus beneficios se manifiestan más claramente en entornos con volúmenes de datos significativamente mayores y escenarios de alta concurrencia, donde el costo de las optimizaciones se amortiza con las mejoras de rendimiento obtenidas.

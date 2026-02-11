@@ -12,8 +12,7 @@ e-shopify-db-optimization/
 ├── README.md              # Este archivo
 ├── docker/                 # Configuración de Docker
 │   ├── docker-compose.yml
-│   ├── Dockerfile.benchmark
-│   └── images/            # Imágenes del proyecto
+│   └── Dockerfile.benchmark
 ├── sql/                   # Scripts SQL
 │   ├── e-shopify-db.sql           # Schema base
 │   ├── e-shopify-db-optimized.sql # Schema optimizado
@@ -22,14 +21,30 @@ e-shopify-db-optimization/
 │   ├── run_baseline.sh           # Benchmark base
 │   ├── run_optimized.sh          # Benchmark optimizado
 │   ├── script_benchmark.py       # Script de benchmark
-│   └── populate_db.py            # Poblador de datos
+│   ├── populate_db.py            # Poblador de datos
+│   └── SCRIPTS_README.md         # Documentación de scripts
 ├── results/               # Resultados de benchmarks
 │   ├── benchmark_baseline.csv    # Resultados base
 │   └── benchmark_optimized.csv   # Resultados optimizados
 └── docs/                  # Documentación
+    ├── der_eshopify-V2.drawio.svg # Diagrama ER
     ├── informe.md                 # Informe original
     ├── informe_optimizacion.md    # Informe de optimización
-    └── SCRIPTS_README.md          # Documentación de scripts
+    └── images/                    # Imágenes del proyecto
+        ├── admin_panel.png
+        ├── connection_config.png
+        ├── der_eshopify-V2.drawio.svg
+        ├── docker_ps.png
+        ├── order_data.png
+        ├── products_data.png
+        ├── query_1.png
+        ├── query_2.png
+        ├── query_3.png
+        ├── query_4.png
+        ├── query_5.png
+        ├── query_6.png
+        ├── tables_pgadmin.png
+        └── user_data.png
 ```
 
 ## 🚀 Inicio Rápido
@@ -42,14 +57,13 @@ e-shopify-db-optimization/
 
 ```bash
 # Benchmark con índices básicos
-cd scripts
-./run_baseline.sh
+./scripts/run_baseline.sh
 
 # Benchmark con optimizaciones
-./run_optimized.sh
+./scripts/run_optimized.sh
 ```
 
-Los resultados se guardan automáticamente en `../results/` como archivos CSV.
+Los resultados se guardan automáticamente en `results/` como archivos CSV.
 
 ## 📊 Resultados
 
@@ -103,35 +117,12 @@ Editar `scripts/script_benchmark.py` para agregar nuevas consultas o operaciones
 ## 📚 Documentación Adicional
 
 - [Informe de Optimización](docs/informe_optimizacion.md) - Detalles técnicos completos
-- [Scripts README](docs/SCRIPTS_README.md) - Documentación detallada de automatización
+- [Scripts README](scripts/SCRIPTS_README.md) - Documentación detallada de automatización
 - [Informe Original](docs/informe.md) - Documentación inicial del proyecto
 
 ## 🐳 Docker
 
-El proyecto usa Docker Compose para:
-- PostgreSQL 15 como base de datos
-- PgAdmin como interfaz web
-- Contenedor de benchmark automatizado
-
-```bash
-cd docker
-docker-compose up -d  # Levantar servicios
-docker-compose down   # Detener servicios
-```
-
-5. **Ejecutar evaluación de rendimiento (opcional)**:
-   ```bash
-   docker-compose up --build benchmark
-   ```
-
-   Este comando ejecutará un script Python que mide los tiempos de consultas frecuentes en la base de datos.
-
-6. **Poblar con datos masivos (opcional, para pruebas realistas)**:
-   ```bash
-   docker-compose up --build populate
-   ```
-
-   Este comando poblará la base de datos con ~10,000 usuarios, 5,000 productos, 2,000 pedidos y 10,000 reseñas para pruebas de rendimiento más realistas.
+Los scripts automatizan el uso de Docker Compose para PostgreSQL y pgAdmin. No se requieren comandos manuales de Docker.
 
 ## Acceso a la Base de Datos
 
@@ -152,45 +143,10 @@ docker-compose down   # Detener servicios
 docker exec -it e-shopify-db psql -U postgres -d e_shopify_db
 ```
 
-## Estructura del Proyecto
 
-```
-e-shopify-db-optimization/
-├── README.md              # Este archivo
-├── der_eshopify-V2.drawio.svg  # Diagrama ER
-├── docker/                 # Configuración de Docker
-│   ├── docker-compose.yml
-│   ├── Dockerfile.benchmark
-│   └── images/            # Imágenes del proyecto
-│       ├── admin_panel.png
-│       ├── connection_config.png
-│       ├── docker_ps.png
-│       ├── order_data.png
-│       ├── products_data.png
-│       ├── tables_pgadmin.png
-│       └── user_data.png
-├── sql/                   # Scripts SQL
-│   ├── e-shopify-db.sql           # Schema base
-│   ├── e-shopify-db-optimized.sql # Schema optimizado
-│   └── init.sql                   # Inicialización
-├── scripts/               # Scripts de automatización
-│   ├── run_baseline.sh           # Benchmark base
-│   ├── run_optimized.sh          # Benchmark optimizado
-│   ├── script_benchmark.py       # Script de benchmark
-│   └── populate_db.py            # Poblador de datos
-├── results/               # Resultados de benchmarks
-│   ├── benchmark_baseline.csv    # Resultados base
-│   └── benchmark_optimized.csv   # Resultados optimizados
-└── docs/                  # Documentación
-    ├── informe.md                 # Informe original
-    ├── informe_optimizacion.md    # Informe de optimización
-    └── SCRIPTS_README.md          # Documentación de scripts
-```
-
-## Uso
 
 ### Ejecutar Consultas
-Una vez conectada la base de datos, puedes ejecutar las consultas SQL incluidas en `e-shopify-db.sql` o directamente en pgAdmin.
+Una vez conectada la base de datos, puedes ejecutar las consultas SQL incluidas en `sql/e-shopify-db.sql` o directamente en pgAdmin.
 
 Ejemplos de consultas disponibles:
 1. Productos por categoría
@@ -201,14 +157,14 @@ Ejemplos de consultas disponibles:
 6. Vendedores con más productos vendidos
 
 ### Ver el Informe
-El archivo `informe.md` contiene el informe académico completo con:
+El archivo `docs/informe.md` contiene el informe académico completo con:
 - Metodología de implementación
 - Detalles técnicos
 - Resultados de consultas
 - Imágenes ilustrativas
 - Conclusiones
 
-### Optimización de Rendimiento ✅ COMPLETADO
+### Optimización de Rendimiento
 Para la actividad S4, se implementaron optimizaciones de rendimiento que lograron resultados excepcionales:
 
 **Optimizaciones implementadas:**
@@ -220,24 +176,20 @@ Para la actividad S4, se implementaron optimizaciones de rendimiento que lograro
 **Resultados del benchmark con datos realistas:**
 - Dataset: 1,008 usuarios, 5,010 productos, 10,008 reseñas, 1,013 pedidos
 - **Tiempo promedio de consultas:** 3.7 ms
-- **Mejor rendimiento:** 0 ms (consultas COUNT optimizadas)
+- **Mejor rendimiento:** < 1 ms (consultas COUNT optimizadas, tiempo indetectable por el sistema)
 - **Consulta más compleja:** 16 ms (agregaciones con JOINs múltiples)
 
-Ejecuta el benchmark con:
+Ejecuta el benchmark con los scripts proporcionados:
 ```bash
-# Para datos pequeños
-docker-compose up --build benchmark
-
-# Para datos realistas (recomendado)
-docker-compose up --build populate
-docker-compose up --build benchmark
+./scripts/run_baseline.sh    # Benchmark base
+./scripts/run_optimized.sh   # Benchmark optimizado
 ```
 
-El informe detallado con análisis completo está en `informe_optimizacion.md`.
+El informe detallado con análisis completo está en `docs/informe_optimizacion.md`.
 
 ## Diagrama ER
 
-El diagrama Entidad-Relación completo se encuentra en `der_eshopify-V2.drawio.svg`. Puedes abrirlo con Draw.io o cualquier visor SVG.
+El diagrama Entidad-Relación completo se encuentra en `docs/der_eshopify-V2.drawio.svg`. Puedes abrirlo con Draw.io o cualquier visor SVG.
 
 ## Datos de Prueba
 
@@ -250,14 +202,9 @@ La base de datos incluye datos de prueba para:
 
 ## Detener los Contenedores
 
-Para detener la base de datos:
+Los scripts detienen automáticamente los contenedores al finalizar. Para limpieza manual:
 ```bash
-docker-compose down
-```
-
-Para detener y eliminar volúmenes (datos persistentes):
-```bash
-docker-compose down -v
+cd docker && docker-compose down -v
 ```
 
 ## Solución de Problemas

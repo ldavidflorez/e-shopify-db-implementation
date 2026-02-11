@@ -27,8 +27,8 @@ services:
 
   benchmark:
     build:
-      context: .
-      dockerfile: Dockerfile.benchmark
+      context: ..
+      dockerfile: docker/Dockerfile.benchmark
     container_name: e-shopify-benchmark
     depends_on:
       - postgres
@@ -43,8 +43,8 @@ services:
 
   populate:
     build:
-      context: .
-      dockerfile: Dockerfile.benchmark
+      context: ..
+      dockerfile: docker/Dockerfile.benchmark
     container_name: e-shopify-populate
     depends_on:
       - postgres

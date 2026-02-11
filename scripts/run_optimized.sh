@@ -4,12 +4,16 @@ echo "=== EJECUTANDO BENCHMARK OPTIMIZED ==="
 echo "Base de datos con optimizaciones avanzadas (índices compuestos, vistas materializadas, etc.)"
 echo ""
 
+# Cambiar al directorio raíz del proyecto
+cd "$(dirname "$0")/.."
+
 # Cambiar al directorio docker para usar docker-compose
-cd ../docker
+cd docker
 
 # Limpiar contenedores y volúmenes de esta aplicación únicamente
 echo "Limpiando contenedores de la aplicación..."
 docker-compose down -v 2>/dev/null || true
+docker rm -f e-shopify-db e-shopify-pgadmin e-shopify-populate e-shopify-benchmark 2>/dev/null || true
 
 # Levantar PostgreSQL
 echo "Levantando PostgreSQL..."
@@ -80,6 +84,6 @@ echo "Operación DELETE,$delete_op,Eliminar producto de prueba" >> ../results/be
 echo "Archivo CSV generado: ../results/benchmark_optimized.csv"
 echo ""
 echo "Contenido del CSV:"
-cat benchmark_optimized.csv
+cat ../results/benchmark_optimized.csv
 echo ""
 echo "Para comparar con baseline, ejecuta: ./run_baseline.sh"

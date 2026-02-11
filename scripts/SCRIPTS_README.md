@@ -8,7 +8,7 @@ Este directorio contiene scripts automatizados para ejecutar benchmarks comparat
 Ejecuta el benchmark completo con la base de datos que tiene únicamente índices básicos.
 - Limpia contenedores anteriores
 - Levanta PostgreSQL
-- Carga el schema básico (`e-shopify-db.sql`)
+- Carga el schema básico (`sql/e-shopify-db.sql`)
 - Pobla datos de prueba
 - Ejecuta el benchmark
 - Muestra resultados
@@ -17,19 +17,10 @@ Ejecuta el benchmark completo con la base de datos que tiene únicamente índice
 Ejecuta el benchmark completo con la base de datos optimizada.
 - Limpia contenedores anteriores
 - Levanta PostgreSQL
-- Carga el schema optimizado (`e-shopify-db-optimized.sql`)
+- Carga el schema optimizado (`sql/e-shopify-db-optimized.sql`)
 - Pobla datos de prueba
 - Ejecuta el benchmark
 - Muestra resultados
-
-### 3. `run_comparison.sh`
-Ejecuta ambos benchmarks secuencialmente y genera una comparación automática.
-- Ejecuta baseline primero
-- Espera 10 segundos
-- Ejecuta optimizado
-- Extrae tiempos de ambos logs
-- Muestra tabla comparativa
-- Guarda logs en `baseline.log` y `optimized.log`
 
 ## Uso
 
@@ -39,15 +30,12 @@ Ejecuta ambos benchmarks secuencialmente y genera una comparación automática.
 
 # Ejecutar solo optimizado
 ./run_optimized.sh
-
-# Ejecutar comparación completa
-./run_comparison.sh
 ```
 
 ## Requisitos
 
 - Docker y Docker Compose instalados
-- Permisos de ejecución en los scripts (ya configurados con `chmod +x`)
+- Permisos de ejecución en los scripts
 - Puerto 5432 disponible (PostgreSQL)
 - Puerto 8080 disponible (pgAdmin)
 
